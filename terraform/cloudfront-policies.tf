@@ -43,6 +43,7 @@ resource "aws_cloudfront_origin_request_policy" "cf_static_rp" {
       items = [
         "p",
         "page_id",
+        "post",
         "post_type"
       ]
     }
@@ -116,6 +117,7 @@ resource "aws_cloudfront_cache_policy" "cf_static_cp" {
         items = [
           "p",
           "page_id",
+          "post",
           "post_type"
         ]
       }
