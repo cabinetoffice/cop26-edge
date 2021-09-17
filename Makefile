@@ -12,7 +12,7 @@ plan: test
 	cd terraform && terraform plan -var-file="production.tfvars"
 
 apply: test
-	cd terraform && terraform apply -var-file="production.tfvars"
+	cd terraform && terraform apply -var-file="production.tfvars" -auto-approve
 
 clean:
 	cd terraform && rm .terraform.* || echo "No tf files to clean"
