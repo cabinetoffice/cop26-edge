@@ -38,7 +38,14 @@ resource "aws_cloudfront_origin_request_policy" "cf_static_rp" {
     }
   }
   query_strings_config {
-    query_string_behavior = "none"
+    query_string_behavior = "whitelist"
+    query_strings {
+      items = [
+        "p",
+        "page_id",
+        "post_type"
+      ]
+    }
   }
 }
 
@@ -104,7 +111,14 @@ resource "aws_cloudfront_cache_policy" "cf_static_cp" {
       }
     }
     query_strings_config {
-      query_string_behavior = "none"
+      query_string_behavior = "whitelist"
+      query_strings {
+        items = [
+          "p",
+          "page_id",
+          "post_type"
+        ]
+      }
     }
   }
 }
