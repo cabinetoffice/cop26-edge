@@ -12,6 +12,10 @@ plan: test
 	cd terraform && terraform plan -var-file="production.tfvars"
 
 apply: test
+	cd terraform && terraform apply -var-file="production.tfvars"
+
+ghapply:
+	cd terraform && terraform init
 	cd terraform && terraform apply -var-file="production.tfvars" -auto-approve
 
 clean:
