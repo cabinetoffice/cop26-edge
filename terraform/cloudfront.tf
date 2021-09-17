@@ -16,11 +16,11 @@ resource "aws_cloudfront_distribution" "distribution" {
   price_class         = "PriceClass_100"
   web_acl_id          = var.web_acl_id
 
-  /*logging_config {
+  logging_config {
     include_cookies = false
     bucket          = "cyber-security-cloudfront.s3.amazonaws.com"
     prefix          = "cop26-website-${var.environment}"
-  }*/
+  }
 
   restrictions {
     geo_restriction {

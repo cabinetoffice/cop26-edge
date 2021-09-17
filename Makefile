@@ -11,7 +11,7 @@ test: clean
 plan: test
 	cd terraform && terraform plan -var-file="production.tfvars"
 
-deploy: test
+apply: test
 	cd terraform && terraform apply -var-file="production.tfvars"
 
 clean:
