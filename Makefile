@@ -5,7 +5,7 @@ PHONY = clean
 test: clean
 	cd origin_response && npm test
 	cd origin_request && npm test
-	cd terraform && terraform init
+	cd terraform && terraform init -backend=false
 	cd terraform && terraform validate
 
 plan: test
