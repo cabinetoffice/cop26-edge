@@ -2,14 +2,14 @@
 
 exports.handler = (event, context, callback) => {
     const request = event.Records[0].cf.request;
-    
+
     const hosts = [
       "www.ukcop26.org",
       "ukcop26.org",
       "together-for-our-planet.ukcop26.org"
     ];
 
-    if (hosts.indexOf(request.headers["host"].value) == -1) {
+    if (hosts.indexOf(request.headers.host[0].value) == -1) {
       callback(null, {
         status: '404',
         statusDescription: 'Not Found',
