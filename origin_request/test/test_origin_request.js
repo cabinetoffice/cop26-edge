@@ -16,7 +16,7 @@ existing_fixture = {
             "host": [
               {
                 "key": "Host",
-                "value": "d123.cf.net"
+                "value": "ukcop26.org"
               }
             ]
           }
@@ -41,7 +41,7 @@ security_txt_path_fixture = {
             "host": [
               {
                 "key": "Host",
-                "value": "d123.cf.net"
+                "value": "ukcop26.org"
               }
             ]
           }
