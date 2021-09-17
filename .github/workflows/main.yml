@@ -28,6 +28,15 @@ jobs:
     runs-on: ubuntu-latest
     environment: live
     steps:
+      - uses: actions/checkout@v2
+      - uses: hashicorp/setup-terraform@v1
+        with:
+          terraform_version: 1.0.6
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: "${{ env.NODE }}"
+          
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v1
         with:
@@ -39,6 +48,7 @@ jobs:
         # there's almost definitely a better way to do this, but it works
         # the variables can be found in the AWS console but aren't for public display in this repo
         run: |
+          rm -f terraform/production.tfvars || echo "No production.tfvars"
           echo "acm_certificate_arn = \"${{ secrets.ACM_CERTIFICATE_ARN }}\"" >> terraform/production.tfvars
           echo "cf_id_value = \"${{ secrets.CF_ID_VALUE }}\"" >> terraform/production.tfvars
           echo "origin_domain = \"${{ secrets.ORIGIN_DOMAIN }}\"" >> terraform/production.tfvars
