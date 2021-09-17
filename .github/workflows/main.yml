@@ -39,8 +39,7 @@ jobs:
         # there's almost definitely a better way to do this, but it works
         # the variables can be found in the AWS console but aren't for public display in this repo
         run: |
-          rm terraform/production.tfvars || echo "No production.tfvars"
-          
+          rm -f terraform/production.tfvars || echo "No production.tfvars"
           echo "acm_certificate_arn = \"${{ secrets.ACM_CERTIFICATE_ARN }}\"" >> terraform/production.tfvars
           echo "cf_id_value = \"${{ secrets.CF_ID_VALUE }}\"" >> terraform/production.tfvars
           echo "origin_domain = \"${{ secrets.ORIGIN_DOMAIN }}\"" >> terraform/production.tfvars
