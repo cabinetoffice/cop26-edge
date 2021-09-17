@@ -5,11 +5,11 @@ const DELETE_SRV_HEADER = "true";
 const HEADER_STS        = "max-age=31536000; includeSubdomains; preload";
 const HEADER_EXPECTCT   = "max-age=0";
 const HEADER_CSP        = "NULL"; // to be worked out
-const HEADER_CSPRO      = "default-src 'self' video.twimg.com player.vimeo.com www.youtube.com; connect-src 'self' www.google-analytics.com; script-src 'self' connect.facebook.net www.facebook.com www.googletagmanager.com ssl.google-analytics.com www.google-analytics.com 'unsafe-eval' 'unsafe-inline'; style-src 'self' p.typekit.net use.typekit.net fonts.googleapis.com 'unsafe-inline'; img-src 'self' data: www.facebook.com s.w.org secure.gravatar.com pbs.twimg.com www.google-analytics.com; font-src data: 'self' fonts.gstatic.com use.typekit.net; frame-src www.facebook.com; report-uri https://browser-listener-10c8e3692d0a.cloudapps.digital/csp-reports; report-to csp-endpoint";
+const HEADER_CSPRO      = "default-src 'self' video.twimg.com player.vimeo.com www.youtube.com; connect-src 'self' www.google-analytics.com; script-src 'self' connect.facebook.net www.facebook.com www.googletagmanager.com ssl.google-analytics.com www.google-analytics.com 'unsafe-eval' 'unsafe-inline'; style-src 'self' p.typekit.net use.typekit.net fonts.googleapis.com 'unsafe-inline'; img-src 'self' data: www.facebook.com s.w.org secure.gravatar.com pbs.twimg.com www.google-analytics.com; font-src data: 'self' fonts.gstatic.com use.typekit.net; frame-src www.facebook.com player.vimeo.com www.youtube.com; report-uri https://browser-listener-10c8e3692d0a.cloudapps.digital/csp-reports; report-to csp-endpoint";
 const HEADER_XCTO       = "nosniff";
 const HEADER_XFO        = "DENY";
 const HEADER_XSSP       = "1; mode=block";
-const HEADER_RF         = "no-referrer-when-downgrade";
+const HEADER_RF         = "strict-origin-when-cross-origin";
 const HEADER_PP         = "geolocation=(), microphone=(), camera=(), autoplay=(), payment=(), vr=()";
 const HEADER_FP         = "geolocation 'none'; microphone 'none'; camera 'none'; autoplay 'none'; payment 'none'; vr 'none';";
 const HEADER_COEP       = "unsafe-none";
@@ -25,6 +25,9 @@ exports.handler = async (event) => {
 
     if (DELETE_SRV_HEADER == 'true' && 'server' in headers) {
         delete headers['server'];
+    }
+    if (DELETE_SRV_HEADER == 'true' && 'x-powered-by' in headers) {
+        delete headers['x-powered-by'];
     }
 
     const report_to = {"group":"csp-endpoint","max_age":86400,"endpoints":[{"url":"https://browser-listener-10c8e3692d0a.cloudapps.digital/csp-reports"}]};
