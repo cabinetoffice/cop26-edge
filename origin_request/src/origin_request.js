@@ -28,6 +28,18 @@ exports.handler = (event, context, callback) => {
       });
       return;
     }
+    
+    if (request.headers.host[0].value == "staging.ukcop26.org") {
+      const customHeaders = request.origin.custom.customHeaders;
+      const stagingAuth = customHeaders["x-staging-authorization"][0].value;
+      
+      request.headers["authorization"] = [{
+        key: 'Authorization',
+        value: stagingAuth
+      }];
+      
+      delete customHeaders["x-staging-authorization"];
+    }
 
     if (request.uri.match(/^(\/.well[-_]known)?\/security\.txt$/)) {
       const sectxt = 'https://vdp.cabinetoffice.gov.uk/.well-known/security.txt';
