@@ -6,6 +6,10 @@ variable "cf_id_value" {
   type = string
 }
 
+variable "staging_authorization" {
+  type = string
+}
+
 variable "acm_certificate_arn" {
   type = string
 }
