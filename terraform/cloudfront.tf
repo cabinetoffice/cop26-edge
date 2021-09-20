@@ -52,6 +52,11 @@ resource "aws_cloudfront_distribution" "distribution" {
       name = "cf-id"
       value = var.cf_id_value
     }
+    
+    custom_header {
+      name = "x-staging-authorization"
+      value = var.staging_authorization
+    }
   }
 
   viewer_certificate {

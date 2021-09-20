@@ -78,7 +78,8 @@ resource "aws_cloudfront_cache_policy" "cf_dynamic_cp" {
       headers {
         items = [
           "Origin",
-          "Host"
+          "Host",
+          "Authorization"
         ]
       }
     }
@@ -107,7 +108,8 @@ resource "aws_cloudfront_cache_policy" "cf_static_cp" {
       headers {
         items = [
           "Origin",
-          "Host"
+          "Host",
+          "Authorization"
         ]
       }
     }

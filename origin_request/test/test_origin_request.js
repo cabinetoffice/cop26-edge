@@ -19,6 +19,55 @@ existing_fixture = {
                 "value": "ukcop26.org"
               }
             ]
+          },
+          "origin": {
+            "custom": {
+              "customHeaders": {
+                "x-staging-authorization": [
+                  {
+                    "key": "x-staging-authorization",
+                    "value": "Basic testing"
+                  }
+                ]
+              }
+            }
+          }
+        }
+      }
+    }
+  ]
+}
+
+staging_fixture = {
+  "Records": [
+    {
+      "cf": {
+        "config": {
+          "distributionId": "EXAMPLE"
+        },
+        "request": {
+          "uri": "/index.phg",
+          "method": "GET",
+          "clientIp": "2001:cdba::3257:9652",
+          "headers": {
+            ":authority": [
+              {
+                "key": ":authority",
+                "value": "staging.ukcop26.org"
+              }
+            ]
+          },
+          "origin": {
+            "custom": {
+              "customHeaders": {
+                "x-staging-authorization": [
+                  {
+                    "key": "x-staging-authorization",
+                    "value": "Basic testing"
+                  }
+                ]
+              }
+            }
           }
         }
       }
@@ -55,6 +104,19 @@ describe("origin_request", function() {
   it('existing_fixture', function(done) {
     origin_request.handler(existing_fixture, {}, function(na, res) {
       expect(res).to.equal(existing_fixture.Records[0].cf.request);
+
+      expect(Object.keys(res["headers"])).to.not.have.members(["x-staging-authorization"]);
+      expect(Object.keys(res["origin"]["custom"]["customHeaders"])).to.have.length(0);
+      done();
+    });
+  });
+
+  it('staging_fixture', function(done) {
+    origin_request.handler(staging_fixture, {}, function(na, res) {
+      const auth = res["headers"]["authorization"][0];
+      expect(auth.value).to.equal('Basic testing');
+
+      expect(Object.keys(res["origin"]["custom"]["customHeaders"])).to.have.length(0);
       done();
     });
   });
