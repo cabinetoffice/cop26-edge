@@ -6,6 +6,7 @@ locals {
 resource "aws_cloudfront_distribution" "distribution" {
   aliases = [
     "www.ukcop26.org",
+    "staging.ukcop26.org",
     "ukcop26.org",
     "together-for-our-planet.ukcop26.org"
   ]
