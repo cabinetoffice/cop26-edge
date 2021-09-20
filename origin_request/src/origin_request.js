@@ -5,6 +5,7 @@ exports.handler = (event, context, callback) => {
 
     const hosts = [
       "www.ukcop26.org",
+      "staging.ukcop26.org",
       "ukcop26.org",
       "together-for-our-planet.ukcop26.org"
     ];
