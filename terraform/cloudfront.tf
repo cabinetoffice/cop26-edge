@@ -80,6 +80,11 @@ resource "aws_cloudfront_distribution" "distribution" {
       event_type = "origin-response"
       lambda_arn = aws_lambda_function.cop26_origin_response.qualified_arn
     }
+
+    lambda_function_association {
+      event_type = "origin-request"
+      lambda_arn = aws_lambda_function.cop26_origin_request.qualified_arn
+    }
   }
 
   ordered_cache_behavior {
@@ -103,6 +108,11 @@ resource "aws_cloudfront_distribution" "distribution" {
       event_type = "origin-response"
       lambda_arn = aws_lambda_function.cop26_origin_response.qualified_arn
     }
+
+    lambda_function_association {
+      event_type = "origin-request"
+      lambda_arn = aws_lambda_function.cop26_origin_request.qualified_arn
+    }
   }
 
   ordered_cache_behavior {
@@ -120,6 +130,11 @@ resource "aws_cloudfront_distribution" "distribution" {
     lambda_function_association {
       event_type = "origin-response"
       lambda_arn = aws_lambda_function.cop26_origin_response.qualified_arn
+    }
+
+    lambda_function_association {
+      event_type = "origin-request"
+      lambda_arn = aws_lambda_function.cop26_origin_request.qualified_arn
     }
   }
 
@@ -139,6 +154,11 @@ resource "aws_cloudfront_distribution" "distribution" {
       event_type = "origin-response"
       lambda_arn = aws_lambda_function.cop26_origin_response.qualified_arn
     }
+
+    lambda_function_association {
+      event_type = "origin-request"
+      lambda_arn = aws_lambda_function.cop26_origin_request.qualified_arn
+    }
   }
 
   ordered_cache_behavior {
@@ -156,6 +176,11 @@ resource "aws_cloudfront_distribution" "distribution" {
     lambda_function_association {
       event_type = "origin-response"
       lambda_arn = aws_lambda_function.cop26_origin_response.qualified_arn
+    }
+
+    lambda_function_association {
+      event_type = "origin-request"
+      lambda_arn = aws_lambda_function.cop26_origin_request.qualified_arn
     }
   }
 
