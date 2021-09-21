@@ -19,3 +19,5 @@ cd terraform && tfenv use
 cd ../
 make test | plan | apply
 ```
+
+Continuously deployed using [GitHub Actions](https://github.com/cabinetoffice/cop26-edge/actions/workflows/main.yml).
