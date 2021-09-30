@@ -57,5 +57,5 @@ jobs:
           echo "web_acl_id = \"${{ secrets.WEB_ACL_ID }}\"" >> terraform/production.tfvars
           echo "environment = \"production\"" >> terraform/production.tfvars
           
-          make ghapply
+          cd terraform && terraform plan -var-file="production.tfvars"
                     
