@@ -56,8 +56,8 @@ jobs:
           echo "origin_domain = \"${{ secrets.ORIGIN_DOMAIN }}\"" >> terraform/production.tfvars
           echo "web_acl_id = \"${{ secrets.WEB_ACL_ID }}\"" >> terraform/production.tfvars
           echo "environment = \"production\"" >> terraform/production.tfvars
-          
-          cd terraform
-          terraform init
-          terraform plan -var-file="production.tfvars"
+          # cd terraform
+          # terraform init
+          # terraform plan -var-file="production.tfvars"
+          make ghapply
                     
