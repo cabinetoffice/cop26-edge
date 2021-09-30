@@ -30,7 +30,7 @@ resource "aws_cloudfront_distribution" "distribution" {
   }
 
   origin {
-    connection_timeout = 3
+    connection_timeout = 10
     domain_name        = var.origin_domain
     origin_id          = local.origin_id
 
