@@ -13,13 +13,16 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
+      
       - uses: hashicorp/setup-terraform@v1
         with:
           terraform_version: 1.0.6
+          
       - name: Set up Node.js
         uses: actions/setup-node@v2
         with:
           node-version: "${{ env.NODE }}"
+          
       - name: Run npm test and terraform validate
         run: make test
         
@@ -27,11 +30,16 @@ jobs:
     needs: test
     runs-on: ubuntu-latest
     environment: live
+    defaults:
+      run:
+        shell: bash
     steps:
       - uses: actions/checkout@v2
+      
       - uses: hashicorp/setup-terraform@v1
         with:
           terraform_version: 1.0.6
+          
       - name: Set up Node.js
         uses: actions/setup-node@v2
         with:
@@ -68,8 +76,8 @@ jobs:
             }"
             echo "awsredact () { redact '[[:xdigit:]]{9,999}'; }"
             echo "hexredact () { redact '[[:xdigit:]]{4,999}'; }"
-          ) | tee -a /home/`whoami`/.bash_profile >> /home/`whoami`/.bashrc
-          source ~/.bashrc
+          ) | tee -a ~/.bash_profile >> ~/.bashrc
+          source ~/.bash_profile
           
           cd terraform
           terraform init | awsredact
