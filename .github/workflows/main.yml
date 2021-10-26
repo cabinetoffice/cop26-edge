@@ -79,9 +79,9 @@ jobs:
           ) | tee -a ~/.bash_profile >> ~/.bashrc
           source ~/.bash_profile
           
-          cd terraform
-          terraform init | awsredact
-          terraform plan -var-file="production.tfvars" | awsredact
-          
-          # make ghapply
+          make ghapply
+          # -- Test plan --
+          # cd terraform
+          # terraform init | awsredact
+          # terraform plan -var-file="production.tfvars" | awsredact
                     
