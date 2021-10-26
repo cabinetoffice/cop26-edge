@@ -56,8 +56,24 @@ jobs:
           echo "origin_domain = \"${{ secrets.ORIGIN_DOMAIN }}\"" >> terraform/production.tfvars
           echo "web_acl_id = \"${{ secrets.WEB_ACL_ID }}\"" >> terraform/production.tfvars
           echo "environment = \"production\"" >> terraform/production.tfvars
-          # cd terraform
-          # terraform init
-          # terraform plan -var-file="production.tfvars"
-          make ghapply
+          
+          echo "Adding environment variables"
+          (
+            echo "redact () {
+              if (( \$# > 0)); then
+                MATCH=\$(echo \"\$@\" | sed 's/ /\|/') && \
+                  sed -E \"s/\$MATCH/REDACTED/g\";
+              else read tmpRdt && echo \$tmpRdt;
+              fi
+            }"
+            echo "awsredact () { redact '[[:xdigit:]]{9,999}'; }"
+            echo "hexredact () { redact '[[:xdigit:]]{4,999}'; }"
+          ) | tee -a /home/`whoami`/.bash_profile >> /home/`whoami`/.bashrc
+          source ~/.bashrc
+          
+          cd terraform
+          terraform init | awsredact
+          terraform plan -var-file="production.tfvars" | awsredact
+          
+          # make ghapply
                     
