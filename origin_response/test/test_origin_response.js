@@ -8,6 +8,42 @@ fixture = {
         "config": {
           "distributionId": "EXAMPLE"
         },
+        "request": {
+          "clientIp": "1.1.1.1",
+          "headers": {
+            "user-agent": [
+              {
+                "key": "User-Agent",
+                "value": "Amazon CloudFront"
+              }
+            ],
+            "cache-control": [
+              {
+                "key": "Cache-Control",
+                "value": "no-cache, cf-no-cache"
+              }
+            ]
+          },
+          "method": "GET",
+          "origin": {
+            "custom": {
+              "customHeaders": {},
+              "domainName": "ukcop26.org",
+              "keepaliveTimeout": 5,
+              "path": "",
+              "port": 443,
+              "protocol": "https",
+              "readTimeout": 30,
+              "sslProtocols": [
+                "TLSv1",
+                "TLSv1.1",
+                "TLSv1.2"
+              ]
+            }
+          },
+          "querystring": "",
+          "uri": "/"
+        },
         "response": {
           "status": "200",
           "statusDescription": "OK",
