@@ -19,6 +19,7 @@ const HEADER_CORP       = "cross-origin";
 exports.handler = async (event) => {
     //Get contents of response
     const response = event.Records[0].cf.response;
+    const request = event.Records[0].cf.request;
     let headers = response.headers;
 
     const currentHeaderKeys = Object.keys(headers);
@@ -28,6 +29,17 @@ exports.handler = async (event) => {
     }
     if (DELETE_SRV_HEADER == 'true' && 'x-powered-by' in headers) {
         delete headers['x-powered-by'];
+    }
+
+    if (
+      request.uri.indexOf("/wp-admin") == 0 ||
+      request.uri.indexOf("/wp-login") == 0
+    ) {
+      // paths starting /wp-admin or /wp-login, set no cache
+      headers['cache-control'] = [{key: 'Cache-Control', value: 'no-cache'}];
+    } else {
+      // set cache-control to 5 mins, matching the CDN policy
+      headers['cache-control'] = [{key: 'Cache-Control', value: 'public, max-age=300, s-maxage=300, must-revalidate'}];
     }
 
     const report_to = {"group":"csp-endpoint","max_age":86400,"endpoints":[{"url":"https://browser-listener-10c8e3692d0a.cloudapps.digital/csp-reports"}]};
