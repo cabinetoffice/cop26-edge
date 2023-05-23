@@ -70,7 +70,7 @@ exports.handler = (event, context, callback) => {
     host = host.replace(/^\s*?(www|staging)\./, '').trim();
 
     var uri_normalised = request.uri.replace(/^[\.\/\\]+\//, '');
-    if (uri_normalised.match(/^\/(wp-admin|wp-config.php|wp-login|wp-cron|\.)/)) {
+    if (uri_normalised.match(/^\/(wp-admin|wp-config.php|wp-login|wp-cron|xmlrpc|\.)/)) {
       uri_normalised = '/';
     }
 
