@@ -1,6 +1,11 @@
 # COP26-edge
 
+## NOW DEPRECATED
+Sites now redirecting to National Archive with 301 Moved Permanently redirects. 
+
 Further info: <https://docs.google.com/document/d/1Tvwl_xtF2W3JQeKNB8l-11RZkFWW_nRx-h8tz_G_IKU/edit>
+
+----
 
 ## Features
 
