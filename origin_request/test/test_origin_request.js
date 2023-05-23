@@ -1,6 +1,8 @@
 const expect         = require("chai").expect;
 const origin_request = require("../src/origin_request.js");
 
+const archive_timestamp = '20230401054904';
+
 existing_fixture = {
   "Records": [
     {
@@ -9,7 +11,7 @@ existing_fixture = {
           "distributionId": "EXAMPLE"
         },
         "request": {
-          "uri": "/index.phg",
+          "uri": "/.git",
           "method": "GET",
           "clientIp": "2001:cdba::3257:9652",
           "headers": {
@@ -22,14 +24,6 @@ existing_fixture = {
           },
           "origin": {
             "custom": {
-              "customHeaders": {
-                "x-staging-authorization": [
-                  {
-                    "key": "x-staging-authorization",
-                    "value": "Basic testing"
-                  }
-                ]
-              }
             }
           }
         }
@@ -59,14 +53,35 @@ staging_fixture = {
           },
           "origin": {
             "custom": {
-              "customHeaders": {
-                "x-staging-authorization": [
-                  {
-                    "key": "x-staging-authorization",
-                    "value": "Basic testing"
-                  }
-                ]
+            }
+          }
+        }
+      }
+    }
+  ]
+}
+
+tfop_fixture = {
+  "Records": [
+    {
+      "cf": {
+        "config": {
+          "distributionId": "EXAMPLE"
+        },
+        "request": {
+          "uri": "/cop26-presidents-foreword/",
+          "method": "GET",
+          "clientIp": "2001:cdba::3257:9652",
+          "headers": {
+            "host": [
+              {
+                "key": "host",
+                "value": "together-for-our-planet.ukcop26.org"
               }
+            ]
+          },
+          "origin": {
+            "custom": {
             }
           }
         }
@@ -103,20 +118,33 @@ security_txt_path_fixture = {
 describe("origin_request", function() {
   it('existing_fixture', function(done) {
     origin_request.handler(existing_fixture, {}, function(na, res) {
-      expect(res).to.equal(existing_fixture.Records[0].cf.request);
+      expect(res).to.not.equal(staging_fixture.Records[0].cf.request);
+      expect(res.status).to.equal('301');
 
-      expect(Object.keys(res["headers"])).to.not.have.members(["x-staging-authorization"]);
-      expect(Object.keys(res["origin"]["custom"]["customHeaders"])).to.have.length(0);
+      const location = res["headers"]["location"][0];
+      expect(location.value).to.equal(`https://webarchive.nationalarchives.gov.uk/ukgwa/${archive_timestamp}/https://ukcop26.org/`);
       done();
     });
   });
 
   it('staging_fixture', function(done) {
     origin_request.handler(staging_fixture, {}, function(na, res) {
-      const auth = res["headers"]["authorization"][0];
-      expect(auth.value).to.equal('Basic testing');
+      expect(res).to.not.equal(staging_fixture.Records[0].cf.request);
+      expect(res.status).to.equal('301');
 
-      expect(Object.keys(res["origin"]["custom"]["customHeaders"])).to.have.length(0);
+      const location = res["headers"]["location"][0];
+      expect(location.value).to.equal(`https://webarchive.nationalarchives.gov.uk/ukgwa/${archive_timestamp}/https://ukcop26.org/index.phg`);
+      done();
+    });
+  });
+
+  it('tfop_fixture', function(done) {
+    origin_request.handler(tfop_fixture, {}, function(na, res) {
+      expect(res).to.not.equal(tfop_fixture.Records[0].cf.request);
+      expect(res.status).to.equal('301');
+
+      const location = res["headers"]["location"][0];
+      expect(location.value).to.equal(`https://webarchive.nationalarchives.gov.uk/ukgwa/${archive_timestamp}/https://together-for-our-planet.ukcop26.org/cop26-presidents-foreword/`);
       done();
     });
   });
@@ -127,7 +155,7 @@ describe("origin_request", function() {
       expect(res.status).to.equal('302');
 
       const location = res["headers"]["location"][0];
-      expect(location.value).to.equal('https://vdp.cabinetoffice.gov.uk/.well-known/security.txt');
+      expect(location.value).to.equal('https://vulnerability-reporting.service.security.gov.uk/.well-known/security.txt');
       done();
     });
   });

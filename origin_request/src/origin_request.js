@@ -3,6 +3,7 @@
 exports.handler = (event, context, callback) => {
     const request = event.Records[0].cf.request;
     const headerKeys = Object.keys(request.headers);
+    const archive_timestamp = '20230401054904';
 
     var customHeaders = {};
     if (Object.keys(request).indexOf("origin") > -1) {
@@ -46,22 +47,8 @@ exports.handler = (event, context, callback) => {
       return;
     }
 
-    if (Object.keys(customHeaders).indexOf("x-staging-authorization") > -1) {
-      if (host == "staging.ukcop26.org") {
-
-        const stagingAuth = customHeaders["x-staging-authorization"][0].value;
-
-        request.headers["authorization"] = [{
-          key: 'Authorization',
-          value: stagingAuth
-        }];
-      }
-
-      delete customHeaders["x-staging-authorization"];
-    }
-
     if (request.uri.match(/^(\/.well[-_]known)?\/security\.txt$/)) {
-      const sectxt = 'https://vdp.cabinetoffice.gov.uk/.well-known/security.txt';
+      const sectxt = 'https://vulnerability-reporting.service.security.gov.uk/.well-known/security.txt';
 
       callback(null, {
           status: '302',
@@ -80,5 +67,28 @@ exports.handler = (event, context, callback) => {
       return;
     }
 
-    callback(null, request);
+    host = host.replace(/^\s*?(www|staging)\./, '').trim();
+
+    var uri_normalised = request.uri.replace(/^[\.\/\\]+\//, '');
+    if (uri_normalised.match(/^\/(wp-admin|wp-config.php|wp-login|\.)/)) {
+      uri_normalised = '/';
+    }
+
+    const archiveUrl = `https://webarchive.nationalarchives.gov.uk/ukgwa/${archive_timestamp}/https://${host}${uri_normalised}`;
+    
+    callback(null, {
+        status: '301',
+        statusDescription: 'Moved Permanently',
+        headers: {
+            location: [{
+                key: 'Location',
+                value: archiveUrl,
+            }],
+            'cache-control': [{
+                key: 'Cache-Control',
+                value: 'public, max-age=86400, immutable',
+            }],
+        },
+    });
+    return;
 };

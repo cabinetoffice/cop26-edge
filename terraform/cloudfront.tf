@@ -47,16 +47,6 @@ resource "aws_cloudfront_distribution" "distribution" {
       enabled              = true
       origin_shield_region = local.origin_shield_region
     }
-
-    custom_header {
-      name = "cf-id"
-      value = var.cf_id_value
-    }
-    
-    custom_header {
-      name = "x-staging-authorization"
-      value = var.staging_authorization
-    }
   }
 
   viewer_certificate {
@@ -65,133 +55,8 @@ resource "aws_cloudfront_distribution" "distribution" {
     ssl_support_method       = "sni-only"
   }
 
-  ordered_cache_behavior {
-    path_pattern     = "wp-login.php"
-    allowed_methods  = ["GET", "HEAD", "OPTIONS", "PUT", "POST", "PATCH", "DELETE"]
-    cached_methods   = ["GET", "HEAD"]
-    compress         = false
-    target_origin_id = local.origin_id
-
-    viewer_protocol_policy = "redirect-to-https"
-
-    forwarded_values {
-      query_string = "true"
-      headers = ["*"]
-      cookies {
-        forward = "all"
-      }
-    }
-
-    lambda_function_association {
-      event_type = "origin-response"
-      lambda_arn = aws_lambda_function.cop26_origin_response.qualified_arn
-    }
-
-    lambda_function_association {
-      event_type = "origin-request"
-      lambda_arn = aws_lambda_function.cop26_origin_request.qualified_arn
-    }
-  }
-
-  ordered_cache_behavior {
-    path_pattern     = "wp-admin/*"
-    allowed_methods  = ["GET", "HEAD", "OPTIONS", "PUT", "POST", "PATCH", "DELETE"]
-    cached_methods   = ["GET", "HEAD"]
-    compress         = false
-    target_origin_id = local.origin_id
-
-    viewer_protocol_policy = "redirect-to-https"
-
-    forwarded_values {
-      query_string = "true"
-      headers = ["*"]
-      cookies {
-        forward = "all"
-      }
-    }
-
-    lambda_function_association {
-      event_type = "origin-response"
-      lambda_arn = aws_lambda_function.cop26_origin_response.qualified_arn
-    }
-
-    lambda_function_association {
-      event_type = "origin-request"
-      lambda_arn = aws_lambda_function.cop26_origin_request.qualified_arn
-    }
-  }
-
-  ordered_cache_behavior {
-    path_pattern     = "wp-content/*"
-    allowed_methods  = ["GET", "HEAD"]
-    cached_methods   = ["GET", "HEAD"]
-    compress         = true
-    target_origin_id = local.origin_id
-
-    viewer_protocol_policy = "redirect-to-https"
-
-    origin_request_policy_id = aws_cloudfront_origin_request_policy.cf_static_rp.id
-    cache_policy_id          = aws_cloudfront_cache_policy.cf_static_cp.id
-
-    lambda_function_association {
-      event_type = "origin-response"
-      lambda_arn = aws_lambda_function.cop26_origin_response.qualified_arn
-    }
-
-    lambda_function_association {
-      event_type = "origin-request"
-      lambda_arn = aws_lambda_function.cop26_origin_request.qualified_arn
-    }
-  }
-
-  ordered_cache_behavior {
-    path_pattern     = "wp-includes/*"
-    allowed_methods  = ["GET", "HEAD"]
-    cached_methods   = ["GET", "HEAD"]
-    compress         = true
-    target_origin_id = local.origin_id
-
-    viewer_protocol_policy = "redirect-to-https"
-
-    origin_request_policy_id = aws_cloudfront_origin_request_policy.cf_static_rp.id
-    cache_policy_id          = aws_cloudfront_cache_policy.cf_static_cp.id
-
-    lambda_function_association {
-      event_type = "origin-response"
-      lambda_arn = aws_lambda_function.cop26_origin_response.qualified_arn
-    }
-
-    lambda_function_association {
-      event_type = "origin-request"
-      lambda_arn = aws_lambda_function.cop26_origin_request.qualified_arn
-    }
-  }
-
-  ordered_cache_behavior {
-    path_pattern     = "/"
-    allowed_methods  = ["GET", "HEAD"]
-    cached_methods   = ["GET", "HEAD"]
-    compress         = true
-    target_origin_id = local.origin_id
-
-    viewer_protocol_policy = "redirect-to-https"
-
-    origin_request_policy_id = aws_cloudfront_origin_request_policy.cf_static_rp.id
-    cache_policy_id          = aws_cloudfront_cache_policy.cf_static_cp.id
-
-    lambda_function_association {
-      event_type = "origin-response"
-      lambda_arn = aws_lambda_function.cop26_origin_response.qualified_arn
-    }
-
-    lambda_function_association {
-      event_type = "origin-request"
-      lambda_arn = aws_lambda_function.cop26_origin_request.qualified_arn
-    }
-  }
-
   default_cache_behavior {
-    allowed_methods  = ["GET", "HEAD", "OPTIONS", "PUT", "POST", "PATCH", "DELETE"]
+    allowed_methods  = ["GET", "HEAD", "OPTIONS"]
     cached_methods   = ["GET", "HEAD"]
     compress         = true
     target_origin_id = local.origin_id

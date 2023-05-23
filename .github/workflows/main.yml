@@ -1,7 +1,7 @@
 name: Test and CD to AWS
 
 env:
-  NODE: 12
+  NODE: 18.16.0
 
 on:
   push:

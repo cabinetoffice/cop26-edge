@@ -4,8 +4,8 @@
 const DELETE_SRV_HEADER = "true";
 const HEADER_STS        = "max-age=31536000; includeSubdomains; preload";
 const HEADER_EXPECTCT   = "max-age=0";
-const HEADER_CSP        = "NULL"; // to be worked out
-const HEADER_CSPRO      = "default-src 'self' *.twimg.com *.vimeo.com www.youtube.com *.cdninstagram.com; connect-src 'self' *.facebook.com www.google-analytics.com; script-src 'self' *.facebook.com *.facebook.net www.googletagmanager.com *.google-analytics.com *.netdna-ssl.com 'unsafe-eval' 'unsafe-inline'; style-src 'self' *.typekit.net *.netdna-ssl.com fonts.googleapis.com 'unsafe-inline'; img-src 'self' data: *.facebook.com s.w.org secure.gravatar.com *.twimg.com *.google-analytics.com *.cdninstagram.com *.netdna-ssl.com; font-src data: 'self' fonts.gstatic.com use.typekit.net *.netdna-ssl.com; frame-src www.facebook.com player.vimeo.com www.youtube.com; report-uri https://browser-listener-10c8e3692d0a.cloudapps.digital/csp-reports; report-to csp-endpoint";
+const HEADER_CSP        = "default-src 'self';";
+const HEADER_CSPRO      = "NULL";
 const HEADER_XCTO       = "nosniff";
 const HEADER_XFO        = "DENY";
 const HEADER_XSSP       = "1; mode=block";
@@ -30,20 +30,6 @@ exports.handler = async (event) => {
     if (DELETE_SRV_HEADER == 'true' && 'x-powered-by' in headers) {
         delete headers['x-powered-by'];
     }
-
-    if (
-      request.uri.indexOf("/wp-admin") == 0 ||
-      request.uri.indexOf("/wp-login") == 0
-    ) {
-      // paths starting /wp-admin or /wp-login, set no cache
-      headers['cache-control'] = [{key: 'Cache-Control', value: 'no-cache'}];
-    } else {
-      // set cache-control to 5 mins, matching the CDN policy
-      headers['cache-control'] = [{key: 'Cache-Control', value: 'public, max-age=300, s-maxage=300, must-revalidate'}];
-    }
-
-    const report_to = {"group":"csp-endpoint","max_age":86400,"endpoints":[{"url":"https://browser-listener-10c8e3692d0a.cloudapps.digital/csp-reports"}]};
-    headers['report-to'] = [{key: 'Report-To', value: JSON.stringify(report_to)}];
 
     if (HEADER_STS != 'NULL' && !currentHeaderKeys.includes('strict-transport-security')) {
       headers['strict-transport-security'] = [{key: 'Strict-Transport-Security', value: HEADER_STS}];
