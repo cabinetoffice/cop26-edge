@@ -3,8 +3,8 @@ DEFAULT_GOAL := test
 PHONY = clean
 
 install:
-    cd origin_response && npm install
-    cd origin_request && npm install
+	cd origin_response && npm install
+	cd origin_request && npm install
 
 test: install clean
 	cd origin_response && npm test
