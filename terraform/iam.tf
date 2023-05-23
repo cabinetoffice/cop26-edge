@@ -10,7 +10,7 @@ resource "aws_iam_role" "lambda_edge_exec" {
           "Service" : [
             "edgelambda.amazonaws.com",
             "lambda.amazonaws.com"
-           ]
+          ]
         },
         "Effect" : "Allow"
       }

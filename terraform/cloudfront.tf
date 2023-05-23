@@ -11,10 +11,11 @@ resource "aws_cloudfront_distribution" "distribution" {
     "together-for-our-planet.ukcop26.org"
   ]
 
-  enabled             = true
-  is_ipv6_enabled     = true
-  comment             = "COP26-${var.environment}"
-  price_class         = "PriceClass_100"
+  enabled         = true
+  is_ipv6_enabled = true
+  http_version    = "http2and3"
+  comment         = "COP26-${var.environment}"
+  price_class     = "PriceClass_100"
   // web_acl_id          = var.web_acl_id
 
   logging_config {
