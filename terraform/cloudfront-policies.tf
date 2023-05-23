@@ -92,8 +92,8 @@ resource "aws_cloudfront_cache_policy" "cf_dynamic_cp" {
 resource "aws_cloudfront_cache_policy" "cf_static_cp" {
   name        = "COP26-Static-CachePolicy"
   comment     = "Static cache policy for the COP26 WordPress site"
-  default_ttl = 600
-  max_ttl     = 1200
+  default_ttl = 86400
+  max_ttl     = 604800
   min_ttl     = 1
 
   parameters_in_cache_key_and_forwarded_to_origin {

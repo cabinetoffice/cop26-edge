@@ -15,7 +15,7 @@ resource "aws_cloudfront_distribution" "distribution" {
   is_ipv6_enabled     = true
   comment             = "COP26-${var.environment}"
   price_class         = "PriceClass_100"
-  web_acl_id          = var.web_acl_id
+  // web_acl_id          = var.web_acl_id
 
   logging_config {
     include_cookies = false
@@ -44,14 +44,14 @@ resource "aws_cloudfront_distribution" "distribution" {
     }
 
     origin_shield {
-      enabled              = true
-      origin_shield_region = local.origin_shield_region
+      enabled              = false
+      // origin_shield_region = local.origin_shield_region
     }
   }
 
   viewer_certificate {
     acm_certificate_arn      = var.acm_certificate_arn
-    minimum_protocol_version = "TLSv1.2_2019"
+    minimum_protocol_version = "TLSv1.2_2021"
     ssl_support_method       = "sni-only"
   }
 
@@ -63,8 +63,8 @@ resource "aws_cloudfront_distribution" "distribution" {
 
     viewer_protocol_policy = "redirect-to-https"
 
-    origin_request_policy_id = aws_cloudfront_origin_request_policy.cf_dynamic_rp.id
-    cache_policy_id          = aws_cloudfront_cache_policy.cf_dynamic_cp.id
+    origin_request_policy_id = aws_cloudfront_origin_request_policy.cf_static_rp.id
+    cache_policy_id          = aws_cloudfront_cache_policy.cf_static_cp.id
 
     lambda_function_association {
       event_type = "origin-response"
