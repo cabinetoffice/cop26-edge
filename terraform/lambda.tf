@@ -16,7 +16,7 @@ resource "aws_lambda_function" "cop26_origin_response" {
 
   function_name = "lambda-at-edge-cop26-origin_response"
 
-  runtime = "nodejs12.x"
+  runtime = "nodejs18.x"
 
   role = aws_iam_role.lambda_edge_exec.arn
 
@@ -47,7 +47,7 @@ resource "aws_lambda_function" "cop26_origin_request" {
 
   function_name = "lambda-at-edge-cop26-origin_request"
 
-  runtime = "nodejs12.x"
+  runtime = "nodejs18.x"
 
   role = aws_iam_role.lambda_edge_exec.arn
 
