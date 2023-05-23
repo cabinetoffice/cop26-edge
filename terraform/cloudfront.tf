@@ -45,7 +45,7 @@ resource "aws_cloudfront_distribution" "distribution" {
 
     origin_shield {
       enabled              = false
-      // origin_shield_region = local.origin_shield_region
+      origin_shield_region = local.origin_shield_region
     }
   }
 
