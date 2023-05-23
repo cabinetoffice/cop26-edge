@@ -2,7 +2,11 @@ SHELL := /usr/bin/env bash
 DEFAULT_GOAL := test
 PHONY = clean
 
-test: clean
+install:
+    cd origin_response && npm install
+    cd origin_request && npm install
+
+test: install clean
 	cd origin_response && npm test
 	cd origin_request && npm test
 	cd terraform && terraform init -backend=false
